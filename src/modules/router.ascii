@@ -1,0 +1,38 @@
+ascii(type=script)
+
+@script:
+    .function Router() {
+        let routes = {}
+        let root = '/'
+        
+        .function navigate(path) {
+            window.history.pushState({}, '', path)
+            resolve(path)
+        }
+        
+        .function resolve(path) {
+            let route = routes[path] || routes['*']
+            if (route) {
+                route()
+            }
+        }
+        
+        return {
+            base: (rootPath) => {
+                root = rootPath
+            },
+            
+            add: (path, handler) => {
+                routes[root + path] = handler
+            },
+            
+            navigate: navigate,
+            
+            start: () => {
+                window.addEventListener('popstate', () => {
+                    resolve(window.location.pathname)
+                })
+                resolve(window.location.pathname)
+            }
+        }
+    }

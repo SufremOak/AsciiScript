@@ -1,0 +1,19 @@
+ascii(type=script)
+
+@script:
+    .function pow(base, exp) {
+        return Math.pow(base, exp)
+    }
+
+    .function sqrt(x) {
+        return Math.sqrt(x)
+    }
+
+    .function round(x, precision) {
+        let factor = Math.pow(10, precision)
+        return Math.round(x * factor) / factor
+    }
+
+    # Constants
+    let PI = 3.14159265359
+    let E = 2.71828182846

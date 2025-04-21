@@ -1,0 +1,35 @@
+ascii(type=script)
+
+@script:
+    .function select(selector) {
+        return document.querySelector(selector)
+    }
+
+    .function selectAll(selector) {
+        return document.querySelectorAll(selector)
+    }
+
+    .function create(tag, attributes) {
+        let element = document.createElement(tag)
+        if (attributes) {
+            for (key in attributes) {
+                element.setAttribute(key, attributes[key])
+            }
+        }
+        return element
+    }
+
+    .function listen(element, event, callback) {
+        element.addEventListener(event, callback)
+        return element
+    }
+
+    .function addClass(element, className) {
+        element.classList.add(className)
+        return element
+    }
+
+    .function removeClass(element, className) {
+        element.classList.remove(className)
+        return element
+    }

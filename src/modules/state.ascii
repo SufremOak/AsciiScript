@@ -1,0 +1,44 @@
+ascii(type=script)
+
+@script:
+    .function createStore(initialState) {
+        let state = initialState
+        let listeners = []
+
+        return {
+            getState: () => state,
+            
+            setState: (newState) => {
+                state = typeof newState === 'function' 
+                    ? newState(state) 
+                    : newState
+                listeners.forEach(listener => listener(state))
+            },
+            
+            subscribe: (listener) => {
+                listeners.push(listener)
+                return () => {
+                    listeners = listeners.filter(l => l !== listener)
+                }
+            }
+        }
+    }
+
+    .function combineReducers(reducers) {
+        return (state, action) => {
+            let nextState = {}
+            for (key in reducers) {
+                nextState[key] = reducers[key](state[key], action)
+            }
+            return nextState
+        }
+    }
+
+    .function connect(selector) {
+        return (component) => {
+            return (props) => {
+                let selectedState = selector(store.getState())
+                return component({ ...props, ...selectedState })
+            }
+        }
+    }

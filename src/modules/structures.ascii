@@ -1,0 +1,98 @@
+ascii(type=script)
+
+@script:
+    .function Stack() {
+        let items = []
+        
+        return {
+            push: (element) => items.push(element),
+            pop: () => items.pop(),
+            peek: () => items[items.length - 1],
+            isEmpty: () => items.length === 0,
+            size: () => items.length,
+            clear: () => { items = [] }
+        }
+    }
+
+    .function Queue() {
+        let items = []
+        
+        return {
+            enqueue: (element) => items.push(element),
+            dequeue: () => items.shift(),
+            front: () => items[0],
+            isEmpty: () => items.length === 0,
+            size: () => items.length,
+            clear: () => { items = [] }
+        }
+    }
+
+    .function HashMap() {
+        let map = {}
+        
+        return {
+            set: (key, value) => { map[key] = value },
+            get: (key) => map[key],
+            remove: (key) => { delete map[key] },
+            has: (key) => key in map,
+            clear: () => { map = {} },
+            keys: () => Object.keys(map),
+            values: () => Object.values(map),
+            size: () => Object.keys(map).length
+        }
+    }
+
+    .function LinkedList() {
+        let head = null
+        
+        .function Node(data) {
+            return {
+                data: data,
+                next: null
+            }
+        }
+        
+        return {
+            append: (data) => {
+                let node = Node(data)
+                if (!head) {
+                    head = node
+                    return
+                }
+                let current = head
+                while (current.next) {
+                    current = current.next
+                }
+                current.next = node
+            },
+            prepend: (data) => {
+                let node = Node(data)
+                node.next = head
+                head = node
+            },
+            delete: (data) => {
+                if (!head) return
+                if (head.data === data) {
+                    head = head.next
+                    return
+                }
+                let current = head
+                while (current.next) {
+                    if (current.next.data === data) {
+                        current.next = current.next.next
+                        return
+                    }
+                    current = current.next
+                }
+            },
+            toArray: () => {
+                let result = []
+                let current = head
+                while (current) {
+                    result.push(current.data)
+                    current = current.next
+                }
+                return result
+            }
+        }
+    }

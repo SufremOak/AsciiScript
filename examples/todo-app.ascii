@@ -1,0 +1,85 @@
+ascii(type=document(article))
+
+@import: "../src/modules/dom.ascii" as dom
+@import: "../src/modules/structures.ascii" as ds
+@import: "../src/modules/formatter.ascii" as fmt
+
+@style: {
+    .todo-app {
+        max.width(600px),
+        margin(auto),
+        padding(20px)
+    }
+
+    .todo-item {
+        display(flex),
+        justify.content(space-between),
+        align.items(center),
+        padding(10px),
+        margin.bottom(5px),
+        background(hex$ '#f5f5f5'),
+        border.radius(4px)
+    }
+}
+
+@script:
+    .function TodoApp() {
+        let todoList = ds.LinkedList()
+        let taskInput = dom.select('#task-input')
+        let todoContainer = dom.select('#todo-list')
+
+        .function addTodo() {
+            let text = taskInput.value
+            if (!text) return
+
+            let formattedText = fmt.capitalize(text)
+            todoList.append(formattedText)
+            renderTodos()
+            taskInput.value = ''
+        }
+
+        .function renderTodos() {
+            todoContainer.innerHTML = ''
+            let todos = todoList.toArray()
+            
+            for (todo in todos) {
+                let item = dom.create('div', { class: 'todo-item' })
+                item.textContent = todo
+                
+                let deleteBtn = dom.create('button', { class: 'delete-btn' })
+                deleteBtn.textContent = 'Delete'
+                dom.listen(deleteBtn, 'click', () => {
+                    todoList.delete(todo)
+                    renderTodos()
+                })
+                
+                item.appendChild(deleteBtn)
+                todoContainer.appendChild(item)
+            }
+        }
+
+        return {
+            init: () => {
+                let addButton = dom.select('#add-btn')
+                dom.listen(addButton, 'click', addTodo)
+                dom.listen(taskInput, 'keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addTodo()
+                    }
+                })
+            }
+        }
+    }
+
+@content:
+    @Heading(1): "Todo App"
+    
+    @div.class="todo-app":
+        @div.class="input-container":
+            @input.id="task-input" type="text" placeholder="Enter a task"
+            @button.id="add-btn": "Add Task"
+        @div.id="todo-list":
+        
+    @script:
+        let app = TodoApp()
+        app.init()

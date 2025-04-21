@@ -1,0 +1,19 @@
+ascii(type=script)
+
+@script:
+    .function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+    }
+
+    .function template(str, vars) {
+        for (key in vars) {
+            str = str.replace(`{${key}}`, vars[key])
+        }
+        return str
+    }
+
+    .function slugify(str) {
+        return str.toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+    }

@@ -1,0 +1,40 @@
+ascii(type=script)
+
+@script:
+    .function describe(name, testSuite) {
+        ascii.console(log => `Test Suite: ${name}`)
+        testSuite()
+    }
+
+    .function test(name, testCase) {
+        try {
+            testCase()
+            ascii.console(log => `✓ ${name}`)
+        } catch (error) {
+            ascii.console(log => `✗ ${name}`)
+            ascii.console(log => `  Error: ${error.message}`)
+        }
+    }
+
+    .function assert(condition, message) {
+        if (!condition) {
+            throw Error(message || "Assertion failed")
+        }
+    }
+
+    .function assertEqual(actual, expected, message) {
+        if (actual !== expected) {
+            throw Error(message || `Expected ${expected} but got ${actual}`)
+        }
+    }
+
+    .function assertThrows(fn, errorType, message) {
+        try {
+            fn()
+            throw Error(message || "Expected function to throw an error")
+        } catch (error) {
+            if (errorType && !(error instanceof errorType)) {
+                throw Error(`Expected error of type ${errorType.name}`)
+            }
+        }
+    }

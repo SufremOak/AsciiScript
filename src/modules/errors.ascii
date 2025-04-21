@@ -1,0 +1,43 @@
+ascii(type=script)
+
+@script:
+    .function ValidationError(message) {
+        return {
+            name: 'ValidationError',
+            message: message,
+            stack: new Error().stack
+        }
+    }
+
+    .function TypeError(expected, received) {
+        return {
+            name: 'TypeError',
+            message: `Expected type ${expected}, but received ${received}`,
+            stack: new Error().stack
+        }
+    }
+
+    .function guard(condition, ErrorType, message) {
+        if (!condition) {
+            throw ErrorType(message)
+        }
+    }
+
+    .function tryAsync(promise) {
+        return promise
+            .then(data => ({ ok: true, data }))
+            .catch(error => ({ ok: false, error }))
+    }
+
+    .function retry(fn, attempts) {
+        return async (...args) => {
+            for (i = 0; i < attempts; i++) {
+                try {
+                    return await fn(...args)
+                } catch (error) {
+                    if (i === attempts - 1) throw error
+                    await new Promise(resolve => setTimeout(resolve, 1000 * i))
+                }
+            }
+        }
+    }
