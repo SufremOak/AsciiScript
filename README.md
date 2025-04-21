@@ -1,6 +1,22 @@
 # AsciiScript
 
-A modern, portable, and declarative scripting language designed for creating interactive documents and web content.
+A modern, portable, and declarative scripting language designed for creating interactive documents and web content. AsciiScript features two implementations: a primary Shell Script (Bash) version and a high-performance C++ macro-based version.
+
+## Implementations
+
+### Shell Script (Primary)
+- Core implementation in Bash
+- Located in `/src/main.sh`
+- Native string manipulation and pattern matching
+- Easy to modify and extend
+- Excellent Unix/Linux system integration
+
+### C++ Macro (Performance)
+- Alternative implementation for high-performance needs
+- Located in `/cpp` directory
+- Compile-time macro processing
+- C++17 features for efficient parsing
+- Cross-platform via CMake
 
 ## Features
 
@@ -13,17 +29,22 @@ A modern, portable, and declarative scripting language designed for creating int
 
 ## Installation
 
-### Prerequisites
-- C++ compiler with C++17 support
-- CMake 3.10 or higher
-
-### Building from Source
+### Shell Script Version
 ```bash
-git clone https://github.com/sufremoak/AsciiScript.git
+git clone https://github.com/yourusername/AsciiScript.git
+cd AsciiScript
+chmod +x src/main.sh
+./src/main.sh example.ascii
+```
+
+### C++ Version
+```bash
+git clone https://github.com/yourusername/AsciiScript.git
 cd AsciiScript/cpp
 mkdir build && cd build
 cmake ..
 make
+./asciiscript example.ascii
 ```
 
 ## Quick Start
@@ -111,4 +132,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Credits
 
-Created by Miguel Vicente (SufremOak)
+Created by Miguel Gargallo
